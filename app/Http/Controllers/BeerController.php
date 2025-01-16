@@ -12,15 +12,24 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Mail\ExportEmail;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Export;
+use App\Models\Meal;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
-
+use Inertia\Inertia;
 
 class BeerController extends Controller
 {
     public function index(BeerRequest $request, PunkapiService $service)
     {
-        return $service->getBeers(...$request->validated());
+        $filters = $request->validated();
+        $beers = $service->getBeers(...$filters);
+        $meals = Meal::all();
+
+        return Inertia::render('Beers', [
+            'beers' => $beers,
+            'meals' => $meals,
+            'filters' => $filters
+        ]);
     }
 
     public function export(BeerRequest $request, PunkapiService $service)
@@ -33,7 +42,6 @@ class BeerController extends Controller
             new StoreExportDataJob(auth()->user(), $filename)
         ])->dispatch($request->validated(), $filename);
 
-
-        return 'relatorio criado!';
+        return redirect()->back();
     }
 }

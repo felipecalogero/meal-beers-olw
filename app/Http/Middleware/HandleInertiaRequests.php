@@ -4,6 +4,8 @@ namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use Tighten\Ziggy\Ziggy as ZiggyZiggy;
+use Tightenco\Ziggy\Ziggy;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -25,15 +27,24 @@ class HandleInertiaRequests extends Middleware
     /**
      * Define the props that are shared by default.
      *
-     * @return array<string, mixed>
+     * @param  \Illuminate\Http\Request  $request
+     * @return mixed[]
      */
-    public function share(Request $request): array
+    public function share(Request $request)
     {
-        return [
-            ...parent::share($request),
+        return array_merge(parent::share($request), [
             'auth' => [
                 'user' => $request->user(),
             ],
-        ];
+            'ziggy' => function () use ($request) {
+                return array_merge((new ZiggyZiggy)->toArray(), [
+                    'location' => $request->url(),
+                ]);
+            },
+            'flash' => [
+                'success' => session()->has('success'),
+                'message' => session('success')
+            ]
+        ]);
     }
 }

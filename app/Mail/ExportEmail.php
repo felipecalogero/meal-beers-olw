@@ -53,7 +53,7 @@ class ExportEmail extends Mailable
     public function attachments(): array
     {
         return [
-            Attachment::fromStorage($this->filename)
+            Attachment::fromStorage('exports/' . $this->filename)
         ];
     }
 }

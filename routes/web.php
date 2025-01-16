@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use GuzzleHttp\Middleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -36,11 +35,11 @@ Route::group([
     'middleware' => 'auth'
 
 ], function () {
+    Route::get('/', [BeerController::class, 'index'])->name('beers');
 
-    Route::get('/', [BeerController::class, 'index']);
-    Route::get('/export', [BeerController::class, 'export']);
+    Route::post('/export', [BeerController::class, 'export'])->name('beers.export');
 
-    Route::resource('reports', ExportController::class)
-    ->only(['index', 'destroy']);
+    Route::resource("reports", ExportController::class)
+        ->only(["index", "show", "destroy"]);
 });
 
