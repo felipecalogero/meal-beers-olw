@@ -8,14 +8,15 @@ Certifique-se de ter os seguintes softwares instalados:
 
 - [Docker](https://www.docker.com/)
 - [Docker Compose](https://docs.docker.com/compose/)
+- [API Documentation](https://punkapi.com/)
 
 ## Como configurar o ambiente
 
 1. Clone este repositório:
 
    ```bash
-   git clone https://github.com/seu-usuario/seu-repositorio.git
-   cd seu-repositorio
+   git clone https://github.com/felipecalogero/meal-beers-olw.git
+   cd meal-beers-olw
    ```
 
 2. Copie o arquivo de exemplo `.env`:
